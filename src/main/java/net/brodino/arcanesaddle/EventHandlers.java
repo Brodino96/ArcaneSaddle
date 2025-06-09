@@ -2,11 +2,14 @@ package net.brodino.arcanesaddle;
 
 import net.brodino.arcanesaddle.utils.DataHelper;
 import net.brodino.arcanesaddle.utils.Mount;
+import net.brodino.arcanesaddle.utils.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ItemCooldownManager;
+import net.minecraft.entity.passive.AbstractHorseEntity;
+import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -27,17 +30,27 @@ public class EventHandlers {
 
         // Player didn't use the Arcane Saddle
         if (!stack.getItem().equals(ItemManager.ARCANE_SADDLE)) {
-            return ActionResult.SUCCESS;
-        }
-
-        // Player had 2 Arcane Saddles in his hand
-        if (player.getOffHandStack().getItem().equals(ItemManager.ARCANE_SADDLE) && player.getMainHandStack().getItem().equals(ItemManager.ARCANE_SADDLE)) {
-            player.sendMessage(Text.translatable("no_dual_wielding"), true);
-            return ActionResult.FAIL;
+            return ActionResult.PASS;
         }
 
         if (MountManager.hasSummonedMount(player.getUuid())) {
             MountManager.dismissMount(player);
+            Utils.notify(player, "mount_dismissed");
+            return ActionResult.SUCCESS;
+        }
+
+        if (Utils.isInCooldown(player, stack)) {
+            Utils.notify(player, "in_cooldown");
+            return ActionResult.FAIL;
+        }
+
+        if (!Utils.isInAllowedDimension(world)) {
+            Utils.notify(player, "invalid_dimension");
+            return ActionResult.FAIL;
+        }
+
+        if (!DataHelper.hasSavedData(stack)) {
+            Utils.notify(player, "no_mount_saved");
             return ActionResult.SUCCESS;
         }
 
@@ -51,25 +64,36 @@ public class EventHandlers {
         ItemStack stack = player.getStackInHand(hand);
 
         if (!stack.getItem().equals(ItemManager.ARCANE_SADDLE)) {
+            return ActionResult.PASS;
+        }
+
+        if (!(entity instanceof HorseEntity mount)) {
+            Utils.notify(player, "entity_not_valid");
             return ActionResult.FAIL;
         }
 
-        ItemCooldownManager cooldownManager = player.getItemCooldownManager();
-
-        if (cooldownManager.isCoolingDown(stack)) {
-            player.sendMessage(Text.translatable("item_in_cooldown"), true);
+        if (Utils.isInCooldown(player, stack)) {
+            Utils.notify(player, "in_cooldown");
             return ActionResult.FAIL;
         }
 
-        cooldownManager.set(stack, ArcaneSaddle.CONFIG.itemCooldown());
+        if (!mount.isTame()) {
+            Utils.notify(player, "mount_untamed");
+            return ActionResult.FAIL;
+        }
+
+        System.out.println(mount.getOwner());
 
         if (DataHelper.hasSavedData(stack)) {
-            player.sendMessage(Text.translatable("item_already_bound"), true);
+            Utils.notify(player, "item_already_bound");
             return ActionResult.FAIL;
         }
 
+        DataHelper.saveMountData((AbstractHorseEntity) entity, stack);
+        entity.discard();
+        Utils.notify(player, "success");
 
-        return ActionResult.FAIL;
+        return ActionResult.SUCCESS;
     }
 
     public static void playerDisconnected(ServerPlayerEntity player) {

@@ -4,6 +4,7 @@
   "package": "net.brodino.arcanesaddle.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "MountTamed"
   ],
   "client": [
   ],

@@ -11,6 +11,8 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
+import java.util.UUID;
+
 public class DataHelper {
 
     public static void saveMountData(AbstractHorseEntity mount, ItemStack stack) {
