@@ -100,6 +100,14 @@ public class EventHandlers {
     }
 
     public static void onMountDeath(LivingEntity entity) {
+        for (Map.Entry<UUID, Mount> entry : MountManager.playerMounts.entrySet()) {
+            Mount mount = entry.getValue();
+
+            if (mount.entity.equals(entity)) {
+                mount.entity.clearActiveItem();
+                mount.dismiss();
+            }
+        }
     }
 
     public static void onServerTick(MinecraftServer server) {
