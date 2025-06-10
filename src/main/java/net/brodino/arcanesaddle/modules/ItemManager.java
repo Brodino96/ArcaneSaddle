@@ -1,8 +1,7 @@
-package net.brodino.arcanesaddle;
+package net.brodino.arcanesaddle.modules;
 
-import com.mojang.serialization.Codec;
+import net.brodino.arcanesaddle.ArcaneSaddle;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.component.ComponentType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
@@ -16,18 +15,6 @@ import java.util.function.Function;
 public class ItemManager {
 
     public static final Item ARCANE_SADDLE = register("arcane_saddle", Item::new, new Item.Settings());
-
-    public static final ComponentType<String> SAVED_MOUNT = Registry.register(
-            Registries.DATA_COMPONENT_TYPE,
-            Identifier.of(ArcaneSaddle.MOD_ID, "saved_mount"),
-            ComponentType.<String>builder().codec(Codec.STRING).build()
-    );
-
-    public static final ComponentType<String> MOUNT_TYPE = Registry.register(
-            Registries.DATA_COMPONENT_TYPE,
-            Identifier.of(ArcaneSaddle.MOD_ID, "mount_type"),
-            ComponentType.<String>builder().codec(Codec.STRING).build()
-    );
 
     // ------------------------------------------------------------------------------------------ \\
 

@@ -1,6 +1,9 @@
 package net.brodino.arcanesaddle;
 
-import net.brodino.arcanesaddle.utils.Config;
+import net.brodino.arcanesaddle.config.Config;
+import net.brodino.arcanesaddle.modules.EventHandlers;
+import net.brodino.arcanesaddle.modules.ItemManager;
+import net.brodino.arcanesaddle.modules.utils.CustomComponents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -9,8 +12,6 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ActionResult;
-import org.apache.logging.log4j.core.jmx.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class ArcaneSaddle implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing Arcane Saddle!");
         this.registerEvents();
+        CustomComponents.initialize();
         ItemManager.initialize();
     }
 

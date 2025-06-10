@@ -1,4 +1,4 @@
-package net.brodino.arcanesaddle.utils;
+package net.brodino.arcanesaddle.modules.utils;
 
 import net.brodino.arcanesaddle.ArcaneSaddle;
 import net.minecraft.entity.player.ItemCooldownManager;
@@ -36,6 +36,11 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Checks if the player is in the right dimension
+     * @param world Za Warudo
+     * @return true if is allowed dimension
+     */
     public static boolean isInAllowedDimension(World world) {
         return ArcaneSaddle.CONFIG.allowedDimension().contains(world.getRegistryKey().getValue().toString());
     }

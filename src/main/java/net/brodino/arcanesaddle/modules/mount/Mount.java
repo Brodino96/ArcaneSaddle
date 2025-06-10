@@ -1,7 +1,8 @@
-package net.brodino.arcanesaddle.utils;
+package net.brodino.arcanesaddle.modules.mount;
 
 import net.brodino.arcanesaddle.ArcaneSaddle;
-import net.brodino.arcanesaddle.MountManager;
+import net.brodino.arcanesaddle.modules.utils.Utils;
+import net.brodino.arcanesaddle.modules.DataHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -9,11 +10,10 @@ import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
 
 public class Mount {
 
-    private final AbstractHorseEntity entity;
+    public final AbstractHorseEntity entity;
     private final ItemStack stack;
     private final PlayerEntity player;
 
@@ -49,10 +49,12 @@ public class Mount {
     }
 
     public void dismiss() {
+        this.entity.setHealth(this.entity.getMaxHealth());
         DataHelper.saveMountData(this.entity, this.stack);
         this.entity.discard();
         Utils.notify(player, "mount_dismissed");
 
+        MountManager.playerMounts.remove(player.getUuid());
         MountManager.playerMounts.remove(player.getUuid());
         MountManager.mountTimers.remove(this);
     }

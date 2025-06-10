@@ -1,4 +1,4 @@
-package net.brodino.arcanesaddle.utils;
+package net.brodino.arcanesaddle.config;
 
 import io.wispforest.owo.config.annotation.Config;
 import net.brodino.arcanesaddle.ArcaneSaddle;

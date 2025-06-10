@@ -1,7 +1,7 @@
-package net.brodino.arcanesaddle.utils;
+package net.brodino.arcanesaddle.modules;
 
 import net.brodino.arcanesaddle.ArcaneSaddle;
-import net.brodino.arcanesaddle.ItemManager;
+import net.brodino.arcanesaddle.modules.utils.CustomComponents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.item.ItemStack;
@@ -11,19 +11,17 @@ import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
-import java.util.UUID;
-
 public class DataHelper {
 
     public static void saveMountData(AbstractHorseEntity mount, ItemStack stack) {
         NbtCompound nbt = new NbtCompound();
-        stack.set(ItemManager.SAVED_MOUNT, mount.writeNbt(nbt).toString());
-        stack.set(ItemManager.MOUNT_TYPE, Registries.ENTITY_TYPE.getId(mount.getType()).toString());
+        stack.set(CustomComponents.SAVED_MOUNT, mount.writeNbt(nbt).toString());
+        stack.set(CustomComponents.MOUNT_TYPE, Registries.ENTITY_TYPE.getId(mount.getType()).toString());
     }
 
     public static NbtCompound loadMountData(ItemStack stack) {
         try {
-            NbtElement element = StringNbtReader.readCompound(stack.get(ItemManager.SAVED_MOUNT));
+            NbtElement element = StringNbtReader.readCompound(stack.get(CustomComponents.SAVED_MOUNT));
 
             if (element instanceof NbtCompound compound) {
                 return compound;
@@ -35,13 +33,13 @@ public class DataHelper {
     }
 
     public static EntityType<?> loadMountType(ItemStack stack) {
-        return Registries.ENTITY_TYPE.get(Identifier.of(stack.get(ItemManager.MOUNT_TYPE)));
+        return Registries.ENTITY_TYPE.get(Identifier.of(stack.get(CustomComponents.MOUNT_TYPE)));
     }
 
     public static boolean hasSavedData(ItemStack stack) {
 
-        String a = stack.get(ItemManager.SAVED_MOUNT);
-        String b = stack.get(ItemManager.MOUNT_TYPE);
+        String a = stack.get(CustomComponents.SAVED_MOUNT);
+        String b = stack.get(CustomComponents.MOUNT_TYPE);
 
         return a != null && !a.isEmpty() && b != null && !b.isEmpty();
     }
