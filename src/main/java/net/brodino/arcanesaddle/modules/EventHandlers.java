@@ -111,5 +111,38 @@ public class EventHandlers {
     }
 
     public static void onServerTick(MinecraftServer server) {
+        Map<UUID, Mount> mountsCopy = new HashMap<>(MountManager.playerMounts);
+
+        for (Map.Entry<UUID, Mount> entry : mountsCopy.entrySet()) {
+            UUID playerUUID = entry.getKey();
+            Mount mount = entry.getValue();
+
+            Entity entity = mount.entity;
+            if (entity == null || !entity.isAlive()) {
+                MountManager.playerMounts.remove(playerUUID);
+                MountManager.mountTimers.remove(mount);
+                continue;
+            }
+
+            if (entity.hasPassengers()) {
+                MountManager.mountTimers.remove(mount);
+            } else {
+                Integer timer = MountManager.mountTimers.getOrDefault(mount, MountManager.mountDuration);
+                timer--;
+
+                if (timer <= 0) {
+
+                    ServerPlayerEntity owner = ArcaneSaddle.SERVER.getPlayerManager().getPlayer(playerUUID);
+
+                    if (owner != null) {
+                        MountManager.dismissMount(owner);
+                    }
+
+                } else {
+                    MountManager.mountTimers.put(mount, timer);
+                }
+            }
+
+        }
     }
 }
