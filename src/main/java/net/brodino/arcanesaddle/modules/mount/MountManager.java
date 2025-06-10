@@ -2,6 +2,7 @@ package net.brodino.arcanesaddle.modules.mount;
 
 import net.brodino.arcanesaddle.ArcaneSaddle;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;

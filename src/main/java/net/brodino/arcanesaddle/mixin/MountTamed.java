@@ -14,6 +14,6 @@ public class MountTamed {
     @Inject(method = "bondWithPlayer", at = @At("TAIL"))
     private void bondWithPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
         AbstractHorseEntity mount = (AbstractHorseEntity) (Object) this;
-        mount.setComponent(CustomComponents.TAMED_BY, player.getName().toString());
+        mount.setComponent(CustomComponents.TAMED_BY, player.getUuidAsString());
     }
 }

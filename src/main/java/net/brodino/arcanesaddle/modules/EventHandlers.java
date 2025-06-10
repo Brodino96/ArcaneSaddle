@@ -104,7 +104,7 @@ public class EventHandlers {
             return ActionResult.FAIL;
         }
 
-        if (mount.get(CustomComponents.TAMED_BY) != null && !mount.get(CustomComponents.TAMED_BY).equals(player.getUuidAsString())) {
+        if (mount.get(CustomComponents.TAMED_BY) != null && mount.get(CustomComponents.TAMED_BY).equals(player.getUuidAsString())) {
             ArcaneSaddle.LOGGER.info("{}'s selected mob wasn't tamed by himself", playerName);
             Utils.notify(player, "mount_is_not_yours");
             return ActionResult.FAIL;
