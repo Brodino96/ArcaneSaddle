@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 public class ItemManager {
 
-    public static final Item ARCANE_SADDLE = register("arcane_saddle", Item::new, new Item.Settings());
+    public static final Item ARCANE_SADDLE = register("arcane_saddle", Item::new, new Item.Settings().maxCount(1));
 
     // ------------------------------------------------------------------------------------------ \\
 
