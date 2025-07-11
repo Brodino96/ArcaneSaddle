@@ -44,16 +44,16 @@ public class EventHandlers {
         String playerName = player.getDisplayName().getString();
         ArcaneSaddle.LOGGER.info("{} used the saddle", playerName);
 
-        if (MountManager.hasSummonedMount(player.getUuid())) {
-            ArcaneSaddle.LOGGER.info("{} already had a summoned mount", playerName);
-            MountManager.dismissMount(player);
-            return ActionResult.SUCCESS;
-        }
-
         if (Utils.isInCooldown(player, stack)) {
             ArcaneSaddle.LOGGER.info("{}'s item is in cooldown", playerName);
             Utils.notify(player, "in_cooldown");
             return ActionResult.FAIL;
+        }
+
+        if (MountManager.hasSummonedMount(player.getUuid())) {
+            ArcaneSaddle.LOGGER.info("{} already had a summoned mount", playerName);
+            MountManager.dismissMount(player);
+            return ActionResult.SUCCESS;
         }
 
         if (!Utils.isInAllowedDimension(world)) {
@@ -80,6 +80,11 @@ public class EventHandlers {
         ItemStack stack = player.getStackInHand(hand);
 
         if (!stack.getItem().equals(ItemManager.ARCANE_SADDLE)) {
+            return ActionResult.PASS;
+        }
+
+        ArcaneSaddle.LOGGER.info("{}", world.isClient);
+        if (world.isClient()) {
             return ActionResult.PASS;
         }
 
