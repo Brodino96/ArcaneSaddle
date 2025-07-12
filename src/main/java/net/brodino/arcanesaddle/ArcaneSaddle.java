@@ -32,22 +32,28 @@ public class ArcaneSaddle implements ModInitializer {
 
     private void registerEvents() {
 
+        // Saved the server on startup
         ServerLifecycleEvents.SERVER_STARTED.register(minecraftServer -> {
             SERVER = minecraftServer;
         });
 
+        // Player disconnecting
         ServerPlayConnectionEvents.DISCONNECT.register(((handler, server) -> {
             EventHandlers.playerDisconnected(handler.player);
         }));
 
+        // Mount dying
         ServerLivingEntityEvents.AFTER_DEATH.register(((entity, damageSource) -> {
             EventHandlers.onMountDeath(entity);
         }));
 
+        // Item being used on something
         UseEntityCallback.EVENT.register(EventHandlers::itemUsedOnEntity);
 
+        // Item being used
         UseItemCallback.EVENT.register(EventHandlers::onItemUse);
 
+        // Tick passing
         ServerTickEvents.END_SERVER_TICK.register(EventHandlers::onServerTick);
     }
 }

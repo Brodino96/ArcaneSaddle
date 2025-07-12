@@ -23,6 +23,10 @@ public class Mount {
         this.entity = this.create();
     }
 
+    /**
+     * Loads the data from the item inside an entity
+     * @return The entity created
+     */
     private AbstractHorseEntity create() {
         EntityType<?> entityType = DataHelper.loadMountType(stack);
         NbtCompound mountData = DataHelper.loadMountData(stack);
@@ -39,6 +43,9 @@ public class Mount {
         return (AbstractHorseEntity) mount;
     }
 
+    /**
+     * Summons the mount inside the world
+     */
     public void summon() {
         this.entity.setPosition(player.getX(), player.getY(), player.getZ());
         player.getWorld().spawnEntity(this.entity);
@@ -48,8 +55,15 @@ public class Mount {
         MountManager.mountTimers.put(this, ArcaneSaddle.CONFIG.mountTimers() * 20);
     }
 
+    /**
+     * Removed the entity from the world and prepares it to be respawned after
+     */
     public void dismiss() {
+        // Stops the mount from dying if dismissed while falling or dying from fall damage
         this.entity.setHealth(this.entity.getMaxHealth());
+        this.entity.fallDistance = 0;
+        this.entity.setVelocity(0, 0, 0);
+
         DataHelper.saveMountData(this.entity, this.stack);
         this.entity.discard();
         Utils.notify(player, "mount_dismissed");
