@@ -5,6 +5,7 @@ import net.brodino.arcanesaddle.modules.mount.MountManager;
 import net.brodino.arcanesaddle.modules.utils.CustomComponents;
 import net.brodino.arcanesaddle.modules.mount.Mount;
 import net.brodino.arcanesaddle.modules.utils.Utils;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -77,29 +78,34 @@ public class EventHandlers {
 
     public static ActionResult itemUsedOnEntity(PlayerEntity player, World world, Hand hand, Entity entity, @Nullable EntityHitResult entityHitResult) {
 
+        if (world.isClient() || entityHitResult == null) {
+            return ActionResult.PASS;
+        }
+
         ItemStack stack = player.getStackInHand(hand);
 
         if (!stack.getItem().equals(ItemManager.ARCANE_SADDLE)) {
             return ActionResult.PASS;
         }
 
-        ArcaneSaddle.LOGGER.info("{}", world.isClient);
-        if (world.isClient()) {
-            return ActionResult.PASS;
-        }
-
         String playerName = player.getDisplayName().getString();
         ArcaneSaddle.LOGGER.info("{} used a saddle on an mob", playerName);
-
-        if (!(entity instanceof HorseEntity mount)) {
-            ArcaneSaddle.LOGGER.info("{}'s selected mob isn't valid", playerName);
-            Utils.notify(player, "entity_not_valid");
-            return ActionResult.FAIL;
-        }
 
         if (Utils.isInCooldown(player, stack)) {
             ArcaneSaddle.LOGGER.info("{}'s saddle is in cooldown", playerName);
             Utils.notify(player, "in_cooldown");
+            return ActionResult.FAIL;
+        }
+
+        if (DataHelper.hasSavedData(stack)) {
+            ArcaneSaddle.LOGGER.info("{}'s saddle already has data saved", playerName);
+            Utils.notify(player, "item_already_bound");
+            return ActionResult.FAIL;
+        }
+
+        if (!(entity instanceof HorseEntity mount)) {
+            ArcaneSaddle.LOGGER.info("{}'s selected mob isn't valid", playerName);
+            Utils.notify(player, "entity_not_valid");
             return ActionResult.FAIL;
         }
 
@@ -109,15 +115,10 @@ public class EventHandlers {
             return ActionResult.FAIL;
         }
 
-        if (mount.get(CustomComponents.TAMED_BY) != null && mount.get(CustomComponents.TAMED_BY).equals(player.getUuidAsString())) {
-            ArcaneSaddle.LOGGER.info("{}'s selected mob wasn't tamed by himself", playerName);
+        String tamedBy = mount.get(CustomComponents.TAMED_BY);
+        if (tamedBy != null && tamedBy.equals(player.getUuidAsString())) {
+            ArcaneSaddle.LOGGER.info("{}'s selected mob wasn't tamed by him", playerName);
             Utils.notify(player, "mount_is_not_yours");
-            return ActionResult.FAIL;
-        }
-
-        if (DataHelper.hasSavedData(stack)) {
-            ArcaneSaddle.LOGGER.info("{}'s saddle already has data saved", playerName);
-            Utils.notify(player, "item_already_bound");
             return ActionResult.FAIL;
         }
 
