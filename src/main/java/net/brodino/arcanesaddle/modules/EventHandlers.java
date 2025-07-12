@@ -35,6 +35,8 @@ public class EventHandlers {
             return ActionResult.PASS;
         }
 
+        ArcaneSaddle.LOGGER.info("Item used event called");
+
         ItemStack stack = player.getStackInHand(hand);
 
         // Player didn't use the Arcane Saddle
