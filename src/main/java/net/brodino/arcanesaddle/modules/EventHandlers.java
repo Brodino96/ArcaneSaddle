@@ -53,9 +53,9 @@ public class EventHandlers {
             return ActionResult.FAIL;
         }
 
-        if (MountManager.hasSummonedMount(player.getUuid())) {
-            ArcaneSaddle.LOGGER.info("{} already had a summoned mount", playerName);
-            MountManager.dismissMount(player);
+        if (!DataHelper.hasSavedData(stack)) {
+            ArcaneSaddle.LOGGER.info("{} item didn't have any stored data", playerName);
+            Utils.notify(player, "no_mount_saved");
             return ActionResult.SUCCESS;
         }
 
@@ -65,9 +65,9 @@ public class EventHandlers {
             return ActionResult.FAIL;
         }
 
-        if (!DataHelper.hasSavedData(stack)) {
-            ArcaneSaddle.LOGGER.info("{} item didn't have any stored data", playerName);
-            Utils.notify(player, "no_mount_saved");
+        if (MountManager.hasSummonedMount(player.getUuid())) {
+            ArcaneSaddle.LOGGER.info("{} already had a summoned mount", playerName);
+            MountManager.dismissMount(player);
             return ActionResult.SUCCESS;
         }
 
