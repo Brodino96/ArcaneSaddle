@@ -54,6 +54,9 @@ public class CompanionFlute implements ModInitializer {
         // Item being used
         UseItemCallback.EVENT.register(EventHandlers::onItemUse);
 
+        // Item being used on a block
+        UseBlockCallback.EVENT.register(EventHandlers::itemUsedOnABlock);
+
         // Tick passing
         ServerTickEvents.END_SERVER_TICK.register(EventHandlers::onServerTick);
     }

@@ -132,6 +132,10 @@ public class EventHandlers {
         return ActionResult.SUCCESS;
     }
 
+    public static ActionResult itemUsedOnABlock(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
+        return ActionResult.PASS;
+    }
+
     public static void playerDisconnected(ServerPlayerEntity player) {
         MountManager.dismissMount(player);
     }
