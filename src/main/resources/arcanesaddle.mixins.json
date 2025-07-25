@@ -4,6 +4,7 @@
   "package": "net.brodino.companionflute.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ItemMoved",
     "MountTamed"
   ],
   "client": [
