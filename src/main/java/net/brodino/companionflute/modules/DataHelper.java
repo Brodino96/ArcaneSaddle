@@ -1,7 +1,7 @@
-package net.brodino.arcanesaddle.modules;
+package net.brodino.companionflute.modules;
 
-import net.brodino.arcanesaddle.ArcaneSaddle;
-import net.brodino.arcanesaddle.modules.utils.CustomComponents;
+import net.brodino.companionflute.CompanionFlute;
+import net.brodino.companionflute.modules.utils.CustomComponents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,7 @@ public class DataHelper {
                 return compound;
             }
         } catch (Exception e) {
-            ArcaneSaddle.LOGGER.error("Failed to parse NBT: {}", e.getMessage());
+            CompanionFlute.LOGGER.error("Failed to parse NBT: {}", e.getMessage());
         }
         return null;
     }

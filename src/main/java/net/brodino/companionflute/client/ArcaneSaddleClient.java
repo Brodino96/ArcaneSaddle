@@ -1,4 +1,4 @@
-package net.brodino.arcanesaddle.client;
+package net.brodino.companionflute.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

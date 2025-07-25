@@ -1,6 +1,6 @@
-package net.brodino.arcanesaddle.modules;
+package net.brodino.companionflute.modules;
 
-import net.brodino.arcanesaddle.ArcaneSaddle;
+import net.brodino.companionflute.CompanionFlute;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -14,19 +14,19 @@ import java.util.function.Function;
 
 public class ItemManager {
 
-    public static final Item ARCANE_SADDLE = register("arcane_saddle", Item::new, new Item.Settings().maxCount(1));
+    public static final Item COMPANION_FLUTE = register("companion_flute", Item::new, new Item.Settings().maxCount(1));
 
     // ------------------------------------------------------------------------------------------ \\
 
     public static void initialize() {
-        ArcaneSaddle.LOGGER.info("Initializing items!");
+        CompanionFlute.LOGGER.info("Initializing items!");
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
-                .register(groupEntries -> groupEntries.add(ARCANE_SADDLE));
+                .register(groupEntries -> groupEntries.add(COMPANION_FLUTE));
     }
 
     private static Item register(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
-        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(ArcaneSaddle.MOD_ID, name));
+        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(CompanionFlute.MOD_ID, name));
 
         Item item = factory.apply(settings.registryKey(itemKey));
 

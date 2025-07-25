@@ -14,7 +14,7 @@
       "net.brodino.arcanesaddle.client.ArcaneSaddleClient"
     ],
     "main": [
-      "net.brodino.arcanesaddle.ArcaneSaddle"
+      "net.brodino.arcanesaddle.CompanionFlute"
     ]
   },
   "mixins": [

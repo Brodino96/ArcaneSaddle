@@ -1,11 +1,10 @@
-package net.brodino.arcanesaddle.modules;
+package net.brodino.companionflute.modules;
 
-import net.brodino.arcanesaddle.ArcaneSaddle;
-import net.brodino.arcanesaddle.modules.mount.MountManager;
-import net.brodino.arcanesaddle.modules.utils.CustomComponents;
-import net.brodino.arcanesaddle.modules.mount.Mount;
-import net.brodino.arcanesaddle.modules.utils.Utils;
-import net.minecraft.component.ComponentType;
+import net.brodino.companionflute.CompanionFlute;
+import net.brodino.companionflute.modules.mount.MountManager;
+import net.brodino.companionflute.modules.utils.CustomComponents;
+import net.brodino.companionflute.modules.mount.Mount;
+import net.brodino.companionflute.modules.utils.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.AbstractHorseEntity;
@@ -16,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -35,45 +35,45 @@ public class EventHandlers {
             return ActionResult.PASS;
         }
 
-        ArcaneSaddle.LOGGER.info("Item used event called");
+        CompanionFlute.LOGGER.info("Item used event called");
 
         ItemStack stack = player.getStackInHand(hand);
 
         // Player didn't use the Arcane Saddle
-        if (!stack.getItem().equals(ItemManager.ARCANE_SADDLE)) {
+        if (!stack.getItem().equals(ItemManager.COMPANION_FLUTE)) {
             return ActionResult.PASS;
         }
 
         String playerName = player.getDisplayName().getString();
-        ArcaneSaddle.LOGGER.info("{} used the saddle", playerName);
+        CompanionFlute.LOGGER.info("{} used the saddle", playerName);
 
         if (Utils.isInCooldown(player, stack)) {
-            ArcaneSaddle.LOGGER.info("{}'s item is in cooldown", playerName);
+            CompanionFlute.LOGGER.info("{}'s item is in cooldown", playerName);
             Utils.notify(player, "in_cooldown");
             return ActionResult.FAIL;
         }
 
         if (!DataHelper.hasSavedData(stack)) {
-            ArcaneSaddle.LOGGER.info("{} item didn't have any stored data", playerName);
+            CompanionFlute.LOGGER.info("{} item didn't have any stored data", playerName);
             Utils.notify(player, "no_mount_saved");
             return ActionResult.SUCCESS;
         }
 
-        if (!Utils.isInAllowedDimension(world)) {
-            ArcaneSaddle.LOGGER.info("{} isn't in an allowed dimension", playerName);
+        if (!Utils.isAnAllowedDimension(world)) {
+            CompanionFlute.LOGGER.info("{} isn't in an allowed dimension", playerName);
             Utils.notify(player, "invalid_dimension");
             return ActionResult.FAIL;
         }
 
         if (MountManager.hasSummonedMount(player.getUuid())) {
-            ArcaneSaddle.LOGGER.info("{} already had a summoned mount", playerName);
+            CompanionFlute.LOGGER.info("{} already had a summoned mount", playerName);
             MountManager.dismissMount(player);
             return ActionResult.SUCCESS;
         }
 
         Mount mount = new Mount(stack, player);
         mount.summon();
-        ArcaneSaddle.LOGGER.info("{}'s successfully summoned a mount", playerName);
+        CompanionFlute.LOGGER.info("{}'s successfully summoned a mount", playerName);
 
         return ActionResult.SUCCESS;
     }
@@ -86,47 +86,47 @@ public class EventHandlers {
 
         ItemStack stack = player.getStackInHand(hand);
 
-        if (!stack.getItem().equals(ItemManager.ARCANE_SADDLE)) {
+        if (!stack.getItem().equals(ItemManager.COMPANION_FLUTE)) {
             return ActionResult.PASS;
         }
 
         String playerName = player.getDisplayName().getString();
-        ArcaneSaddle.LOGGER.info("{} used a saddle on an mob", playerName);
+        CompanionFlute.LOGGER.info("{} used a saddle on an mob", playerName);
 
         if (Utils.isInCooldown(player, stack)) {
-            ArcaneSaddle.LOGGER.info("{}'s saddle is in cooldown", playerName);
+            CompanionFlute.LOGGER.info("{}'s saddle is in cooldown", playerName);
             Utils.notify(player, "in_cooldown");
             return ActionResult.FAIL;
         }
 
         if (DataHelper.hasSavedData(stack)) {
-            ArcaneSaddle.LOGGER.info("{}'s saddle already has data saved", playerName);
+            CompanionFlute.LOGGER.info("{}'s saddle already has data saved", playerName);
             Utils.notify(player, "item_already_bound");
             return ActionResult.FAIL;
         }
 
         if (!(entity instanceof HorseEntity mount)) {
-            ArcaneSaddle.LOGGER.info("{}'s selected mob isn't valid", playerName);
+            CompanionFlute.LOGGER.info("{}'s selected mob isn't valid", playerName);
             Utils.notify(player, "entity_not_valid");
             return ActionResult.FAIL;
         }
 
         if (!mount.isTame()) {
-            ArcaneSaddle.LOGGER.info("{}'s selected mob isn't tamed", playerName);
+            CompanionFlute.LOGGER.info("{}'s selected mob isn't tamed", playerName);
             Utils.notify(player, "mount_untamed");
             return ActionResult.FAIL;
         }
 
         String tamedBy = mount.get(CustomComponents.TAMED_BY);
         if (tamedBy != null && tamedBy.equals(player.getUuidAsString())) {
-            ArcaneSaddle.LOGGER.info("{}'s selected mob wasn't tamed by him", playerName);
+            CompanionFlute.LOGGER.info("{}'s selected mob wasn't tamed by him", playerName);
             Utils.notify(player, "mount_is_not_yours");
             return ActionResult.FAIL;
         }
 
         DataHelper.saveMountData((AbstractHorseEntity) entity, stack);
         entity.discard();
-        ArcaneSaddle.LOGGER.info("{}'s successfully bounded a mount to his saddle", playerName);
+        CompanionFlute.LOGGER.info("{}'s successfully bounded a mount to his saddle", playerName);
         Utils.notify(player, "bound_success");
 
         return ActionResult.SUCCESS;
@@ -169,7 +169,7 @@ public class EventHandlers {
 
                 if (timer <= 0) {
 
-                    ServerPlayerEntity owner = ArcaneSaddle.SERVER.getPlayerManager().getPlayer(playerUUID);
+                    ServerPlayerEntity owner = CompanionFlute.SERVER.getPlayerManager().getPlayer(playerUUID);
 
                     if (owner != null) {
                         MountManager.dismissMount(owner);

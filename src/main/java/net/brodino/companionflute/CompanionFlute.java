@@ -1,13 +1,14 @@
-package net.brodino.arcanesaddle;
+package net.brodino.companionflute;
 
-import net.brodino.arcanesaddle.config.Config;
-import net.brodino.arcanesaddle.modules.EventHandlers;
-import net.brodino.arcanesaddle.modules.ItemManager;
-import net.brodino.arcanesaddle.modules.utils.CustomComponents;
+import net.brodino.companionflute.config.Config;
+import net.brodino.companionflute.modules.EventHandlers;
+import net.brodino.companionflute.modules.ItemManager;
+import net.brodino.companionflute.modules.utils.CustomComponents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -15,9 +16,9 @@ import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ArcaneSaddle implements ModInitializer {
+public class CompanionFlute implements ModInitializer {
 
-    public static final String MOD_ID = "arcanesaddle";
+    public static final String MOD_ID = "companion_flute";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Config CONFIG = Config.createAndLoad();
     public static MinecraftServer SERVER;
@@ -47,7 +48,7 @@ public class ArcaneSaddle implements ModInitializer {
             EventHandlers.onMountDeath(entity);
         }));
 
-        // Item being used on something
+        // Item being used on an entity
         UseEntityCallback.EVENT.register(EventHandlers::itemUsedOnEntity);
 
         // Item being used

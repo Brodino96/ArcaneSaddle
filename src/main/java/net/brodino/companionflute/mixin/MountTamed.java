@@ -1,6 +1,6 @@
-package net.brodino.arcanesaddle.mixin;
+package net.brodino.companionflute.mixin;
 
-import net.brodino.arcanesaddle.modules.utils.CustomComponents;
+import net.brodino.companionflute.modules.utils.CustomComponents;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

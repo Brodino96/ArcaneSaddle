@@ -1,8 +1,8 @@
-package net.brodino.arcanesaddle.modules.mount;
+package net.brodino.companionflute.modules.mount;
 
-import net.brodino.arcanesaddle.ArcaneSaddle;
-import net.brodino.arcanesaddle.modules.utils.Utils;
-import net.brodino.arcanesaddle.modules.DataHelper;
+import net.brodino.companionflute.CompanionFlute;
+import net.brodino.companionflute.modules.utils.Utils;
+import net.brodino.companionflute.modules.DataHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -52,7 +52,7 @@ public class Mount {
         Utils.notify(player, "mount_summoned");
 
         MountManager.playerMounts.put(player.getUuid(), this);
-        MountManager.mountTimers.put(this, ArcaneSaddle.CONFIG.mountTimers() * 20);
+        MountManager.mountTimers.put(this, CompanionFlute.CONFIG.mountTimers() * 20);
     }
 
     /**

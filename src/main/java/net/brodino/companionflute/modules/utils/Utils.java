@@ -1,6 +1,6 @@
-package net.brodino.arcanesaddle.modules.utils;
+package net.brodino.companionflute.modules.utils;
 
-import net.brodino.arcanesaddle.ArcaneSaddle;
+import net.brodino.companionflute.CompanionFlute;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -32,7 +32,7 @@ public class Utils {
             return true;
         }
 
-        itemCooldownManager.set(stack, ArcaneSaddle.CONFIG.itemCooldown()/* * 20 */);
+        itemCooldownManager.set(stack, CompanionFlute.CONFIG.itemCooldown()/* * 20 */);
         return false;
     }
 
@@ -41,7 +41,7 @@ public class Utils {
      * @param world Za Warudo
      * @return true if is allowed dimension
      */
-    public static boolean isInAllowedDimension(World world) {
-        return ArcaneSaddle.CONFIG.allowedDimension().contains(world.getRegistryKey().getValue().toString());
+    public static boolean isAnAllowedDimension(World world) {
+        return CompanionFlute.CONFIG.allowedDimension().contains(world.getRegistryKey().getValue().toString());
     }
 }
